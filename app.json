@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "web": {
+      "publicUrl": "https://stax1989.github.io/rememberta-app"
+    },
     "splash": {
       "backgroundColor": "#FFF8F0"
     },
