@@ -30,6 +30,18 @@ const PostScreen = ({ navigation, route }: any) => {
   const hasContent = text.trim().length > 0 || images.length > 0;
   const isPostDisabled = !mood || !hasContent;
 
+  /** Convert a blob: URI to a data: URI (for persistent storage on web) */
+  const blobUriToBase64 = async (uri: string): Promise<string> => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
   const pickImage = async () => {
     if (images.length >= 9) {
       Alert.alert('提示', '最多添加9张图片');
@@ -39,10 +51,17 @@ const PostScreen = ({ navigation, route }: any) => {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsMultipleSelection: true,
-        quality: 0.8,
+        quality: 0.6,
       });
       if (!result.canceled) {
-        const newUris = result.assets.map((a) => a.uri);
+        let newUris = result.assets.map((a) => a.uri);
+        // On web, ImagePicker returns temporary blob: URIs that disappear
+        // after page refresh. Convert them to persistent data: URIs.
+        if (Platform.OS === 'web') {
+          newUris = await Promise.all(
+            newUris.map((uri) => blobUriToBase64(uri))
+          );
+        }
         setImages((prev) => [...prev, ...newUris].slice(0, 9));
       }
     } catch (e) {
