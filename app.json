@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "记住ta",
+    "slug": "remember-ta",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#FFF8F0"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.dengshichao.rememberta"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFF8F0"
+      },
+      "package": "com.dengshichao.rememberta"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "记住ta需要访问你的相册来上传图片"
+        }
+      ],
+      "expo-asset",
+      "expo-localization"
+    ]
+  }
+}
